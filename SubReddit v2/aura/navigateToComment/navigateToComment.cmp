@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:isUrlAddressable" access="global">
+    <aura:attribute type="String" name="postId"/>
+    <aura:attribute type="String" name="postName"/>
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.reInit}" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+        <c:comment postId="{!v.postId}" postName="{!v.postName}"/>
+</aura:component>

@@ -1,0 +1,99 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-m-around_medium">
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">   
+            <header class="slds-modal__header">
+                    <button class="slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Subreddit</h2>
+                </header>
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+        <lightning-card title="Create Reddit">
+            <div class="slds-modal__content slds-p-around_medium">
+            <lightning-record-edit-form object-api-name="SubReddit__c" onsuccess={createSubReddit} density="compact">
+                <lightning-input-field class="slds-var-p-around_medium" field-name="Name" ></lightning-input-field>
+                <lightning-input-field class="slds-var-p-around_medium" field-name="Category__c"></lightning-input-field>
+                <lightning-button class="slds-m-left_x-small" label="Create Reddit" variant="brand" type="submit"></lightning-button>
+        </lightning-record-edit-form>
+    </div>
+    </lightning-card>
+</div>
+</div> 
+</section>
+</template>
+
+
+
+      
+    <div class="slds-m-bottom_small">
+        <lightning-input type="search" placeholder="Search..."
+           value={searchValue}
+           label="Search for SubReddit"
+           onchange={handleSearchKeyword}
+           ></lightning-input>
+    </div>
+
+<template if:false={searchRedditEmpty}>
+<template if:true={subRedditSearchRec}>
+ <div class="slds-text-heading_large">Search Results:)</div>
+<template for:each={subRedditSearchRec} for:item="SR" for:index="index">
+        <lightning-card class="slds-hint-parent" key={SR.subredditrec.Id}>
+        <div class="slds slds-p-horizontal--medium">
+                            <span>
+                                <div class="slds-list_horizontal">
+                                    <div>
+                                <lightning-button-icon class="slds-p-bottom_x-small" icon-name="utility:like"  variant="bare" name="UpLike" onclick={onClickVote} disabled={SR.upLike} data-record-id={SR.subredditrec.Id} data-item={SR.subredditrec.Id} data-index={index} size="large"></lightning-button-icon><br>
+                                <b>{SR.subredditrec.No_Of_Upvotes__c}</b><br>
+                                <b>{SR.subredditrec.No_Of_Downvotes__c}</b><br>
+                                <lightning-button-icon class="slds-p-top_x-small" icon-name="utility:dislike" variant="bare" name="DownLike" onclick={onClickVote} disabled={SR.downLike} data-record-id={SR.subredditrec.Id} data-item={SR.subredditrec.Id} data-index={index} size="large"></lightning-button-icon>
+                            </div>&nbsp;&nbsp;&nbsp;
+                            <div class="slds-p-top_medium">
+                                    <lightning-icon icon-name="standard:account" size="large" alternative-text="Account" title="Account"></lightning-icon>&nbsp;&nbsp;&nbsp;
+                                    <a onclick={redirect} data-record-id={SR.subredditrec.Id} data-item={SR.subredditrec.Id} data-index={index}>{SR.subredditrec.Name}</a>
+                                </div>
+                                </div>
+                                </span>
+                                <h4><b>{SR.subredditrec.Category__c}</b></h4>
+                    </div>
+        </lightning-card>
+</template>
+</template>
+</template>
+<br>
+<lightning-button variant="brand-outline" label="Create SubReddit" title="Create SubReddit" onclick={showModalBox}></lightning-button>
+<br>
+<br>
+<template if:true={searchRedditEmpty}>
+    <div class="slds-text-heading_large">Trending Topics!</div>
+    <template for:each={subRedditDefaultRec} for:item="SR" for:index="index">
+        <lightning-card class="slds-hint-parent" key={SR.subredditrec.Id}>
+        <div class="slds slds-p-horizontal--medium">
+                            <span>
+                                <div class="slds-list_horizontal">
+                                    <div>
+                                <lightning-button-icon class="slds-p-bottom_x-small" icon-name="utility:like" variant="bare" value=true name="UpLike" onclick={onClickVote} disabled={SR.upLike} data-record-id={SR.subredditrec.Id} data-item={SR.subredditrec.Id} data-index={index} size="large"></lightning-button-icon><br>
+                                <b>{SR.subredditrec.No_Of_Upvotes__c}</b><br>
+                                <b>{SR.subredditrec.No_Of_Downvotes__c}</b><br>
+                                <lightning-button-icon class="slds-p-top_x-small" icon-name="utility:dislike" variant="bare" value=false name="DownLike" onclick={onClickVote} disabled={SR.downLike} data-record-id={SR.subredditrec.Id} data-item={SR.subredditrec.Id} data-index={index} size="large"></lightning-button-icon>
+                            </div>&nbsp;&nbsp;&nbsp;
+                            <div class="slds-p-top_medium">
+                                    <lightning-icon icon-name="standard:account" size="large" alternative-text="Account" title="Account"></lightning-icon>&nbsp;&nbsp;&nbsp;
+                                    <a onclick={redirect} data-record-id={SR.subredditrec.Id} data-index={index} data-item={SR.subredditrec.Id}>{SR.subredditrec.Name}</a>
+                                </div>
+                                </div>
+                                </span>
+                                <h4><b>{SR.subredditrec.Category__c}</b></h4>
+                    </div>
+        </lightning-card>
+    </template>
+</template>
+</div>
+</template>
