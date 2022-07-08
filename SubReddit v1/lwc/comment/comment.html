@@ -1,0 +1,78 @@
+<!-- sldsValidatorIgnore -->
+<!-- sldsValidatorIgnoreNextLine -->
+<template>
+    <div class="slds-m-around_medium">
+   <lightning-card class="slds-text-heading_medium " style="text-align:center;">
+  <b> {postName}</b>
+</lightning-card>
+<br>
+  <lightning-record-edit-form object-api-name="Comment__c"  onsuccess={handleSuccessComment} style="height:20px; width:400px" class="slds-p-bottom_none" >
+    <h4>Add your comments here:-</h4>
+    <div class="slds-list_horizontal">
+    <lightning-input-field field-name="Body__c"  data-name="Reset" value ="" variant="label-hidden" style="text-align:left;width: 800px" ></lightning-input-field>
+    &nbsp;&nbsp;<lightning-button variant="bare" label="Save" type="submit" class="slds-p-top_xx-small" ></lightning-button>
+    <lightning-input-field field-name="Post__c" variant="label-hidden" value={postId} class="slds-hidden"></lightning-input-field>
+</div>
+</lightning-record-edit-form> 
+<br>
+<template if:true={CommentRecords}>
+    <template for:each={CommentRecords} for:item="Com" for:index="index">
+        <lightning-card key={Com.Id} class="slds-hint-parent">
+            <div class="slds slds-p-horizontal--medium">
+                    <ul>
+                        <li class="slds-p-bottom_xx-small">
+                    <lightning-button-icon icon-name="utility:like" data-id={Com.Id} data-record-id={Com.Id} data-item={Com.Id} variant="bare" size="large" class="test" name="UpLike" data-index={index} onclick={onClickVote}></lightning-button-icon>&nbsp;&nbsp;
+                    <b>{Com.Upvotes__c}</b>
+                </li>
+                <li class="slds-p-bottom_xx-small">
+                 <lightning-icon icon-name="action:add_contact" alternative-text="Subreddit" title="userIcon" size="x-small"></lightning-icon>&nbsp;&nbsp;&nbsp;
+                 <b class="slds-p-left_x-small">{Com.Body__c}</b> <br>{Com.CreatedBy.CreatedDate}
+        </li>
+         <li class="slds-p-bottom_xx-small">
+         
+         <lightning-button-icon icon-name="utility:dislike" data-record-id={Com.Id} data-index={index} data-item={Com.Id} value={Com.Id} variant="bare" size="large" name="DownLike" onclick={onClickVote}></lightning-button-icon>&nbsp;&nbsp;
+        <b>{Com.DownVotes__c}<lightning-accordion class="comment-accordion" onsectiontoggle={handleToggleSection} active-section-name={accordianSection} allow-multiple-sections-open>
+            <lightning-accordion-section name="comment" label="Comments">
+                    <b><a onclick={handleSubComments} data-record-id={Com.Id} data-index={index} name={Com.Name} value ={Com.Id} data-item={Com.Id} >View all comments</a></b><br>
+                    <lightning-record-edit-form object-api-name="Comment__c" onsuccess={handleSuccessComment}>
+                        <div class="slds-list_horizontal">
+                        <lightning-input-field field-name="Body__c" data-name="Reset1" value ="" variant="label-hidden"></lightning-input-field> &nbsp;&nbsp;
+                        <lightning-button variant="Neutral" label="Save" type="submit"></lightning-button>
+                    </div>
+                    <lightning-input-field field-name="Comment__c" variant="label-hidden" value={Com.Id} class="slds-hidden slds-p-around_none"></lightning-input-field>
+                    <lightning-input-field field-name="Post__c" variant="label-hidden" value={postId} class="slds-hidden slds-p-around_none"></lightning-input-field>
+                         </lightning-record-edit-form>
+
+                         <template if:true={subCommentRecords}>
+                            <template for:each={subCommentRecords} for:item="Sc" for:index="index">
+                                <lightning-card class="slds-hint-parent" key={Sc.Id}>
+                                <div class="slds-p-horizontal--medium">
+                                                    <span>
+                                                        <div class="slds-list_horizontal">
+                                                            <div>
+                                                        <lightning-button-icon class="slds-p-bottom_x-small" icon-name="utility:like"  variant="bare" name="UpLikeSub" onclick={onClickSubVote} data-record-id={Sc.Id} data-item={Sc.Id} data-index={index} size="large"></lightning-button-icon><br>
+                                                        <b>{Sc.Upvotes__c}</b><br>
+                                                        <b>{Sc.DownVotes__c}</b><br>
+                                                        <lightning-button-icon class="slds-p-top_x-small" icon-name="utility:dislike" variant="bare" name="DownLikeSub" onclick={onClickSubVote} data-record-id={Sc.Id} data-item={Sc.Id} data-index={index} size="large"></lightning-button-icon>
+                                                    </div>&nbsp;&nbsp;&nbsp;
+                                                    <div class="slds-p-top_medium">
+                                                            <lightning-icon icon-name="action:add_contact" alternative-text="Subreddit" title="userIcon" size="x-small"></lightning-icon>&nbsp;&nbsp;&nbsp;
+                                                            <b class="slds-p-left_x-small">{Sc.Body__c}</b> <br>{Sc.CreatedBy.CreatedDate}
+                                                        </div>
+                                                        </div>
+                                                        </span>
+                                            </div>
+                                </lightning-card>
+                        </template>
+                        </template>
+                </lightning-accordion-section>
+           </lightning-accordion></b>
+        </li>
+        </ul>
+</div>
+    </lightning-card>
+     </template>
+    </template>
+
+</div>
+</template>
